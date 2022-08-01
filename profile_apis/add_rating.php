@@ -7,13 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("HTTP/1.1 400 Bad Request");
         $response = array('response' => 'error', 'responseCode' => 400, 'errorMessage' => 'Bad Request');
         echo json_encode($response);
-    } else {
+    } else  {
         if (isset($decoded['userId'])) {
             require '../dbconn.php';
-            $userId = $row['userId'];
-            $myUserId = $row['myUserId'];
-            $rating = (int) $row['rating'];
-            $review = mysqli_real_escape_string($connection,$row['review']);
+            $userId = $decoded['userId'];
+            $myUserId = $decoded['myUserId'];
+            $rating = (int) $decoded['rating'];
+            $review = mysqli_real_escape_string($connection,$decoded['review']);
             $query = "insert into user_ratings (rating_by_user_id, user_id, review, rating) values ('$userId','$myUserId','$review','$rating')";
             mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
             $response = array('response' => 'success', 'responseCode' => 200);
