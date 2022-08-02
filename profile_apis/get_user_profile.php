@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response = array('response' => 'error', 'responseCode' => 400, 'errorMessage' => 'Bad Request');
         echo json_encode($response);
     } else {
-        if (isset($decoded['userId'])) {
+        if (isset($decoded['myUserId'])) {
             require '../dbconn.php';
-            $userId = mysqli_real_escape_string($connection, $decoded['userId']);
+            $userId = mysqli_real_escape_string($connection, $decoded['myUserId']);
             $query = "SELECT * FROM users WHERE primary_id='$userId'";
             $results = mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
             if ($row = mysqli_fetch_array($results)) {
@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $userPhone = $row['user_phone_number'];
                 $userDOB = $row['user_dob'];
                 $userAbout = $row['user_about'];
+                $userRating = 0;
                 $userFullName = $row['user_full_name'];
                 $response = array('response' => 'success', 'responseCode' => 200, 'data' => 
                 array(
@@ -32,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'userDOB' => $userDOB,
                     'userAbout' => $userAbout,
                     'userPhone' => $userEmail,
+                    'userRating' => $userRating
             ));
             } else {
                 $response = array('response' => 'error', 'responseCode' => 403, 'errorMessage' => 'Something went wrong');

@@ -8,15 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response = array('response' => 'error', 'responseCode' => 400, 'errorMessage' => 'Bad Request');
         echo json_encode($response);
     } else {
-        if (isset($decoded['userId'])) {
+        if (isset($decoded['myUserId'])) {
             require '../dbconn.php';
-            $userAddress =mysqli_real_escape_string($connection, $row['userAddress']);
-            $userGender = mysqli_real_escape_string($connection,$row['userGender']) ;
-            $userDOB = mysqli_real_escape_string($connection,$row['userDOB']);
-            $userAbout =mysqli_real_escape_string($connection, $row['userAbout']);
-            $userId = mysqli_real_escape_string($connection, $decoded['userId']);
+            $userAddress =mysqli_real_escape_string($connection, $decoded['userAddress']);
+            $userGender = mysqli_real_escape_string($connection,$decoded['userGender']) ;
+            $userDOB = mysqli_real_escape_string($connection,$decoded['userDOB']);
+            $userAbout =mysqli_real_escape_string($connection, $decoded['userAbout']);
+            $userId = mysqli_real_escape_string($connection, $decoded['myUserId']);
             $userFullName = mysqli_real_escape_string($connection, $decoded['userFullName']);
-            $query = "update users set users set user_address = '$userAddress',user_gender = '$userGender',user_dob = '$userDOB',user_about = '$userAbout',user_full_name = '$userFullName' where user_id = $userId";
+            $query = "update users set user_address = '$userAddress',user_gender = '$userGender',user_dob = '$userDOB',user_about = '$userAbout',user_full_name = '$userFullName' where primary_id = $userId";
             mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
             $response = array('response' => 'success', 'responseCode' => 200);
             echo json_encode($response);
