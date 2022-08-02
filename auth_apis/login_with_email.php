@@ -15,18 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $deviceId = mysqli_real_escape_string($connection, $decoded['deviceId']);
             $encryptedPassword = md5($password);
             $query = "select primary_id from users WHERE (user_phone_number='$emailOrPhone' or user_email='$emailOrPhone') and user_password='$encryptedPassword'";
-	    $results = mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
+            $results = mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
             if ($row = mysqli_fetch_array($results)) {
                 $userId = $row['primary_id'];
-		        $data = array("userId"=>$userId);
+                $data = array("userId"=>$userId);
                 $response = array('response' => 'success', 'responseCode' => 200, 'data' => $data);
                 echo json_encode($response);
             } else {
                 $query = "SELECT * FROM users WHERE (user_phone_number='$emailOrPhone' or user_email='$emailOrPhone')";
                 $results = mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
                 if ($row = mysqli_fetch_array($results)) {
+                    header("HTTP/1.1 402 Password not match");
+
                     $response = array('response' => 'error', 'responseCode' => 455, 'errorMessage' => 'Password not match');
                 } else {
+                    header("HTTP/1.1 402 Invalid user id");
+
                     $response = array('response' => 'error', 'responseCode' => 452, 'errorMessage' => 'Invalid user id');
                 }
                 echo json_encode($response);

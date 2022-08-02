@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (isset($decoded['myUserId'])) {
             require '../dbconn.php';
+            require '../utils/constants.php';
             $userId = mysqli_real_escape_string($connection, $decoded['myUserId']);
             $query = "SELECT * FROM users WHERE primary_id='$userId'";
             $results = mysqli_query($connection, $query) or die('Error : ' . mysqli_error($connection));
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'userAddress' => $userAddress,
                     'userFullName' => $userFullName,
                     'userGender' => $userGender,
-                    'userDP' => $userDP,
+                    'userDP' => $baseURL.$userDP,
                     'userDOB' => $userDOB,
                     'userAbout' => $userAbout,
                     'userPhone' => $userEmail,
