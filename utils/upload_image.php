@@ -12,6 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (isset($decoded['type']) ) {
 
+            require '../dbconn.php';
+            require_once "../utils/constants.php";
+            $myUserId = $decoded['myUserId'];
             $target_dir = "../uploads/";
             $res_dir = "uploads/";
             $rand = rand(111111111,999999999);
@@ -27,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $target_file = $target_dir. $subDir ."IMG-".$rand. ".jpg";
 $uploadOk = 1;
             $response_file = $res_dir. $subDir ."IMG-".$rand. ".jpg";
+            mysqli_query($connection, "update users set user_display_picture = '$response_file' where primary_id = $myUserId");
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                    $response = array('response' => 'success', 'responseCode' => 200,"data"=>$response_file);
             echo json_encode($response);
