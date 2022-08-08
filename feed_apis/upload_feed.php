@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $postType = mysqli_real_escape_string($connection, $decoded['postType']);
             $location = mysqli_real_escape_string($connection, $decoded['location']);
             $imageURL = mysqli_real_escape_string($connection, $decoded['imageURL']);
-            $locationLat = $decoded['locationLat'];
-            $locationLng = $decoded['locationLng'];
+            $locationLat = 0;
+            $locationLng = 0;
             $myUserId = $decoded['myUserId'];
             $travelDate = "";
             $travelGender = "";

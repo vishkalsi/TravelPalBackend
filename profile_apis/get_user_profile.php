@@ -27,6 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $userAbout = $row['user_about'];
                 $userRating = 0;
                 $userFullName = $row['user_full_name'];
+
+                $isFollowing = false;
+                $checkRes = mysqli_query($connection, "select * from follow_unfollow where follower_id = $userId and user_id = $otherUserId");
+                $isFollowing = mysqli_num_rows($checkRes) > 0;
+
+
                 $response = array('response' => 'success', 'responseCode' => 200, 'data' => 
                 array(
                     'userEmail' => $userEmail,
@@ -40,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'followingCount' => 0,
                     'userPhone' => $userEmail,
                     'userRating' => $userRating,
-                    'isFollowing' => false,
+                    'isFollowingUser' => $isFollowing,
                     'isMyProfile' => $isMyProfile
             ));
             } else {
